@@ -2,7 +2,7 @@
 
 The Sampler receives raw voltage readings from the Sensor and processes them at controlled intervals before forwarding them to downstream components.
 
-##Pipeline:
+## Pipeline:
 
 Sensor → Sampler → Transformer → REST API → Database
 
