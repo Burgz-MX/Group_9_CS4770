@@ -1,0 +1,27 @@
+{
+  "name": "group_9_cs4770",
+  "version": "1.0.0",
+  "description": "The Sampler receives raw voltage readings from the Sensor and processes them at controlled intervals before forwarding them to downstream components.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Burgz-MX/Group_9_CS4770.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Burgz-MX/Group_9_CS4770/issues"
+  },
+  "homepage": "https://github.com/Burgz-MX/Group_9_CS4770#readme",
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
+}
