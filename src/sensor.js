@@ -1,32 +1,26 @@
-const axios = require("axios")
+const axios = require("axios");
 
 function generateReading() {
-
-    return {
-        sensorId: "sensor-1",
-        voltage: Math.random() * 5,
-        timestamp: new Date().toISOString()
-    }
+  return {
+    sensorId: "sensor-1",
+    voltage: Number((Math.random() * 5).toFixed(2)),
+    timestamp: new Date().toISOString()
+  };
 }
 
 async function sendReading() {
+  const reading = generateReading();
 
-    const reading = generateReading()
+  try {
+    const response = await axios.post("http://localhost:3000/sample", reading, {
+      headers: { "Content-Type": "application/json" }
+    });
 
-    try {
-
-        const response = await axios.post(
-            "http://localhost:3000/sample",
-            reading
-        )
-
-        console.log("Sensor Sent:", reading)
-        console.log("Sampler Response:", response.data)
-
-    } catch (error) {
-
-        console.log("Error sending reading")
-    }
+    console.log("Sensor sent:", reading);
+    console.log("Pipeline response:", JSON.stringify(response.data, null, 2));
+  } catch (error) {
+    console.error("Failed to send reading:", error.response?.data || error.message);
+  }
 }
 
-setInterval(sendReading, 2000)
+setInterval(sendReading, 2000);
