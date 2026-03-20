@@ -39,3 +39,41 @@ POST /sample
 The Sampler exposes a JSON-based HTTPS endpoint that receives voltage readings from sensors.  
 It validates incoming data and processes readings only at fixed intervals to improve energy efficiency.  
 Timeout detection is used to detect missing sensor readings and support system availability.
+
+
+
+
+# Transformer Component – API Design
+
+The Transformer component receives sampled voltage data from the Sampler and converts it into temperature values.  
+The interface uses JSON over HTTPS so that it stays consistent with the Weather Station pipeline.
+
+Pipeline:  
+Sensor → Sampler → Transformer → REST API → Database
+
+## Endpoint
+POST /transform
+
+## Input JSON Example
+
+{
+  "sensorId": "sensor-1",
+  "sampledVoltage": 2.75,
+  "timestamp": "2026-03-20T16:00:00Z"
+}
+
+## Output JSON Example
+
+{
+  "sensorId": "sensor-1",
+  "temperature": 27.5,
+  "unit": "C",
+  "timestamp": "2026-03-20T16:00:00Z",
+  "status": "success"
+}
+
+## Design Explanation
+
+The Transformer exposes a simple JSON-based endpoint that accepts sampled voltage values and returns converted temperature values.
+The design is kept consistent with the Sampler API so that integration in the pipeline remains straightforward.
+A simple formula is used for conversion to prioritize correctness, readability, and easy testing.
