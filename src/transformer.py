@@ -14,7 +14,9 @@ def voltage_to_temperature(voltage):
 
 @app.route("/transform", methods=["POST"])
 def transform():
-    data = request.get_json()
+    
+    ## note from max - I added the silent = true because I have no idea what signal it will send if there is no json, but it would overwrite the warning we do ourselves later 
+    data = request.get_json(silent=True)
 
     if not data:
         return jsonify({
