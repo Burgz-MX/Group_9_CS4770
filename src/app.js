@@ -24,7 +24,7 @@ app.post("/sample", async (req, res) => {
   }
 
   try {
-    const transformerResponse = await axios.post("http://localhost:5000/transform", {
+    const transformerResponse = await axios.post("http://localhost:5001/transform", {
       sensorId: result.sensorId,
       sampledVoltage: result.sampledVoltage,
       timestamp: result.timestamp
