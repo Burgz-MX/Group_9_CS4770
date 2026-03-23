@@ -7,6 +7,8 @@ on:
     branches: [ "**" ]
   workflow_dispatch:
 
+
+##Test the pipeline
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -20,8 +22,28 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install CI
         run: npm ci
 
       - name: Run tests
         run: npm test
+
+##test the transformer 
+transformer 
+  name: Test the Transformer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install pytest
+        run: pip install flask pytest
+
+      - name: Run Transformer tests via pytest
+        run: pytest test/test_transformer.py -v
+  
