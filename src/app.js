@@ -24,7 +24,7 @@ app.post("/sample", async (req, res) => {
   }
 
   try {
-    const transformerResponse = await axios.post("http://localhost:5001/transform", {
+    const transformerResponse = await axios.post("http://localhost:5000/transform", {
       sensorId: result.sensorId,
       sampledVoltage: result.sampledVoltage,
       timestamp: result.timestamp
@@ -37,15 +37,14 @@ app.post("/sample", async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: "Transformer service unavailable",
+      message: "Transformer unavailable",
       details: error.message
     });
   }
 });
 
 app.get("/health", (req, res) => {
-  const health = sampler.checkAvailability();
-  res.status(200).json(health);
+  res.json(sampler.checkAvailability());
 });
 
 app.listen(port, () => {
