@@ -1,13 +1,53 @@
-version: "3.9"
-
 services:
+ 
   db:
-    image: postgres:16
-    container_name: weather-db
-    restart: always
+    image: postgres:16-alpine
     environment:
-      POSTGRES_DB: weatherdb
-      POSTGRES_USER: weatheruser
-      POSTGRES_PASSWORD: weatherpass
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+ 
+  restapi:
+    build: ./restapi
+    ports:
+      - "6000:6000"
+    environment:
+      DB_HOST: db
+      DB_NAME: db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_PORT: "5432"
+    depends_on:
+      - db
+ 
+  transformer:
+    build: ./transformer
+    ports:
+      - "5000:5000"
+    environment:
+      REST_API_URL: http://restapi:6000
+    depends_on:
+      - restapi
+ 
+  sampler:
+    build: ./sampler
+    ports:
+      - "3000:3000"
+    environment:
+      TRANSFORMER_URL: http://transformer:5000
+    depends_on:
+      - transformer
+ 
+  sensor:
+    build: ./sensor
+    environment:
+      SAMPLER_URL: http://sampler:3000
+    depends_on:
+      - sampler
+ 
+volumes:
+  db_data:
