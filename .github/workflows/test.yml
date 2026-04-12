@@ -42,7 +42,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install pytest
-        run: pip install flask pytest
+        run: pip install flask pytest requests
 
       - name: Run Transformer tests via pytest
         run: pytest test/test_transformer.py -v
