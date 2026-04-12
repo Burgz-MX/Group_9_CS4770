@@ -48,7 +48,7 @@ jobs:
         run: pytest test/test_transformer.py -v
 
 ##test the REST API 
-rest-api:
+  rest-api:
     name: Test the REST API
     runs-on: ubuntu-latest
     steps:
