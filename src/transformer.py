@@ -1,22 +1,18 @@
 from flask import Flask, request, jsonify
+import requests
 
 app = Flask(__name__)
 
+REST_API_URL = "http://localhost:6000/temperature"
+
 
 def voltage_to_temperature(voltage):
-    """
-    Simple conversion formula for class demo:
-    temperature (C) = voltage * 10
-    Example: 2.75V -> 27.5C
-    """
     return round(voltage * 10, 2)
 
 
 @app.route("/transform", methods=["POST"])
 def transform():
-    
-    ## note from max - I added the silent = true because I have no idea what signal it will send if there is no json, but it would overwrite the warning we do ourselves later 
-    data = request.get_json(silent=True)
+    data = request.get_json()
 
     if not data:
         return jsonify({
@@ -48,14 +44,28 @@ def transform():
 
     temperature = voltage_to_temperature(sampled_voltage)
 
+    try:
+        rest_response = requests.post(REST_API_URL, json={
+            "temperature": temperature,
+            "timestamp": timestamp
+        })
+        rest_data = rest_response.json()
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": "REST API unavailable",
+            "details": str(e)
+        }), 500
+
     return jsonify({
         "sensorId": sensor_id,
         "temperature": temperature,
         "unit": "C",
         "timestamp": timestamp,
+        "storage": rest_data,
         "status": "success"
     }), 200
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
