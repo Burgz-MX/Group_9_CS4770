@@ -48,7 +48,7 @@ jobs:
         run: pytest test/test_transformer.py -v
 
 ##test the REST API 
-  rest-api:
+  restapi:
     name: Test the REST API
     runs-on: ubuntu-latest
     steps:
@@ -70,7 +70,7 @@ jobs:
   pipeline: 
     name: test the Pipeline 
     runs-on: ubuntu-latest
-    needs: [test, transformer, rest-api]
+    needs: [test, transformer, restapi]
     steps: 
       - name: Checkout code 
         uses: actions/checkout@v4 
@@ -79,7 +79,7 @@ jobs:
         run: docker compose build
       
       - name: Start Database and Rest API 
-        run: docker compose up -d db rest-api
+        run: docker compose up -d db restapi
       
       - name: wait for Database to be up 
         run: sleep 10
