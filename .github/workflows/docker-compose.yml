@@ -16,8 +16,8 @@ services:
       timeout: 5s
       retries: 10
  
-  rest-api:
-    build: ./rest-api
+  restapi:
+    build: ./restapi
     ports:
       - "6000:6000"
     environment:
@@ -35,9 +35,9 @@ services:
     ports:
       - "5000:5000"
     environment:
-      REST_API_URL: http://rest-api:6000
+      REST_API_URL: http://restapi:6000
     depends_on:
-      - rest-api
+      - restapi
  
   sampler:
     build: ./sampler
